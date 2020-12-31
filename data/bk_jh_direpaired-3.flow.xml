@@ -1,0 +1,20 @@
+<flows>
+
+		<!--  0-4点   -->
+
+	<flow id="1to4_sec3" begin="25200" end="36000" from="8465266" to="76210646"  number="200"/>
+	<flow id="1to3_sec3" begin="25200" end="36000" from="8465266" to="8418367"   number="500"/>
+	<flow id="1to2_sec3" begin="25200" end="36000" from="8465266" to="32456600"  number="100"/>
+
+	<flow id="3to2_sec3" begin="25200" end="36000" from="84850470" to="32456600" number="200"/>
+	<flow id="3to1_sec3" begin="25200" end="36000" from="84850470" to="39105790" number="500"/>
+	<flow id="3to4_sec3" begin="25200" end="36000" from="84850470" to="76210646" number="100"/>
+
+	<flow id="2to1_sec3" begin="25200" end="36000" from="60304325" to="39105790" number="300"/>
+	<flow id="2to4_sec3" begin="25200" end="36000" from="60304325" to="76210646" number="12000"/>
+	<flow id="2to3_sec3" begin="25200" end="36000" from="60304325" to="8418367"  number="400"/>
+
+	<flow id="4to3_sec3" begin="25200" end="36000" from="76210648" to="8418367"  number="300"/>
+	<flow id="4to2_sec3" begin="25200" end="36000" from="76210648" to="32456600" number="12000"/>
+	<flow id="4to1_sec3" begin="25200" end="36000" from="76210648" to="39105790" number="400"/>
+</flows>

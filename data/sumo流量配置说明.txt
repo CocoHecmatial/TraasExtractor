@@ -1,0 +1,72 @@
+duarouter --departlane free -n bk_jh_direpaired.net.xml -f bk_jh_direpaired.flow-normal.xml -o bk_jh_direpaired.rou-normal.xml
+
+duarouter --departlane free -n bk_jh_direpaired.net.xml -f bk_jh_direpaired.flow-peak.xml -o bk_jh_direpaired.rou-peak.xml
+
+duarouter --departlane free -n bk_jh_direpaired.net.xml -f bk_jh_direpaired.flow-valley.xml -o bk_jh_direpaired.rou-valley.xml
+
+sumo-gui bk_jh_direpaired-normal.sumocfg
+
+sumo-gui bk_jh_direpaired-peak.sumocfg
+
+sumo-gui bk_jh_direpaired-valley.sumocfg
+
+周一到周五，上下浮动10%
+周六日 低20%-25%
+
+
+export PATH=$PATH:/mysumo/java/jdk1.8.0_251/bin
+
+
+duarouter --departlane free -n bk_jh_direpaired.net.xml -f bk_jh_direpaired.flow-day1.xml -o bk_jh_direpaired.rou-day1.xml
+duarouter --departlane free -n bk_jh_direpaired.net.xml -f bk_jh_direpaired.flow-day1.xml -o bk_jh_direpaired.rou-day2.xml
+duarouter --departlane free -n bk_jh_direpaired.net.xml -f bk_jh_direpaired.flow-day1.xml -o bk_jh_direpaired.rou-day3.xml
+duarouter --departlane free -n bk_jh_direpaired.net.xml -f bk_jh_direpaired.flow-day1.xml -o bk_jh_direpaired.rou-day4.xml
+duarouter --departlane free -n bk_jh_direpaired.net.xml -f bk_jh_direpaired.flow-day1.xml -o bk_jh_direpaired.rou-day5.xml
+duarouter --departlane free -n bk_jh_direpaired.net.xml -f bk_jh_direpaired.flow-day1.xml -o bk_jh_direpaired.rou-day6.xml
+duarouter --departlane free -n bk_jh_direpaired.net.xml -f bk_jh_direpaired.flow-day1.xml -o bk_jh_direpaired.rou-day7.xml
+
+
+nohup java -cp TraasExtractor-1.0-SNAPSHOT-jar-with-dependencies.jar traas.exe.TraasExtractor /mysumo/output/vtd_1 /mysumo/bk_jh_direpaired-day1.sumocfg 20200608000000 >vtd_1_run.log &
+nohup java -cp TraasExtractor-1.0-SNAPSHOT-jar-with-dependencies.jar traas.exe.TraasExtractor /mysumo/output/vtd_2 /mysumo/bk_jh_direpaired-day2.sumocfg 20200609000000 >vtd_2_run.log &
+nohup java -cp TraasExtractor-1.0-SNAPSHOT-jar-with-dependencies.jar traas.exe.TraasExtractor /mysumo/output/vtd_3 /mysumo/bk_jh_direpaired-day3.sumocfg 20200610000000 >vtd_3_run.log &
+nohup java -cp TraasExtractor-1.0-SNAPSHOT-jar-with-dependencies.jar traas.exe.TraasExtractor /mysumo/output/vtd_4 /mysumo/bk_jh_direpaired-day4.sumocfg 20200611000000 >vtd_4_run.log &
+nohup java -cp TraasExtractor-1.0-SNAPSHOT-jar-with-dependencies.jar traas.exe.TraasExtractor /mysumo/output/vtd_5 /mysumo/bk_jh_direpaired-day5.sumocfg 20200612000000 >vtd_5_run.log &
+nohup java -cp TraasExtractor-1.0-SNAPSHOT-jar-with-dependencies.jar traas.exe.TraasExtractor /mysumo/output/vtd_6 /mysumo/bk_jh_direpaired-day6.sumocfg 20200613000000 >vtd_6_run.log &
+nohup java -cp TraasExtractor-1.0-SNAPSHOT-jar-with-dependencies.jar traas.exe.TraasExtractor /mysumo/output/vtd_7 /mysumo/bk_jh_direpaired-day7.sumocfg 20200614000000 >vtd_7_run.log &
+
+
+alter table vehicle_track_data_day1 drop constraint vehicle_track_data_day1_millisectime_check;
+alter table vehicle_track_data_day2 drop constraint vehicle_track_data_day2_millisectime_check;
+alter table vehicle_track_data_day3 drop constraint vehicle_track_data_day3_millisectime_check;
+alter table vehicle_track_data_day4 drop constraint vehicle_track_data_day4_millisectime_check;
+alter table vehicle_track_data_day5 drop constraint vehicle_track_data_day5_millisectime_check;
+alter table vehicle_track_data_day6 drop constraint vehicle_track_data_day6_millisectime_check;
+alter table vehicle_track_data_day7 drop constraint vehicle_track_data_day7_millisectime_check;
+
+
+create index vehicle_track_data_day1_millisectime_index on vehicle_track_data_day1(millisectime);
+create index vehicle_track_data_day2_millisectime_index on vehicle_track_data_day2(millisectime);
+create index vehicle_track_data_day3_millisectime_index on vehicle_track_data_day3(millisectime);
+create index vehicle_track_data_day4_millisectime_index on vehicle_track_data_day4(millisectime);
+create index vehicle_track_data_day5_millisectime_index on vehicle_track_data_day5(millisectime);
+create index vehicle_track_data_day6_millisectime_index on vehicle_track_data_day6(millisectime);
+create index vehicle_track_data_day7_millisectime_index on vehicle_track_data_day7(millisectime);
+
+
+alter table vehicle_track_data_day1 no inherit vehicle_track_data;
+alter table vehicle_track_data_day2 no inherit vehicle_track_data;
+alter table vehicle_track_data_day3 no inherit vehicle_track_data;
+alter table vehicle_track_data_day4 no inherit vehicle_track_data;
+alter table vehicle_track_data_day5 no inherit vehicle_track_data;
+alter table vehicle_track_data_day6 no inherit vehicle_track_data;
+alter table vehicle_track_data_day7 no inherit vehicle_track_data;
+
+
+alter table vehicle_track_data_day1 add constraint vehicle_track_data_day1_millisectime_check check (millisectime between 1591574400100 and 1591660889000);
+alter table vehicle_track_data_day2 add constraint vehicle_track_data_day2_millisectime_check check (millisectime between 1591660800100 and 1591747292900);
+alter table vehicle_track_data_day3 add constraint vehicle_track_data_day3_millisectime_check check (millisectime between 1591747200100 and 1591833694500);
+alter table vehicle_track_data_day4 add constraint vehicle_track_data_day4_millisectime_check check (millisectime between 1591833600100 and 1591920092600);
+alter table vehicle_track_data_day5 add constraint vehicle_track_data_day5_millisectime_check check (millisectime between 1591920000100 and 1592006494400);
+alter table vehicle_track_data_day6 add constraint vehicle_track_data_day6_millisectime_check check (millisectime between 1592006400100 and 1592092892700);
+alter table vehicle_track_data_day7 add constraint vehicle_track_data_day7_millisectime_check check (millisectime between 1592092800100 and 1592179289800);
+
